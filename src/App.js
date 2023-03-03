@@ -1,88 +1,97 @@
 
-import { Route, Routes, useNavigate
+import { Route, Routes, useNavigate, useLocation
 } from 'react-router-dom';
  import Cards from './components/Cards/Cards'
 import NavBar from './components/Navbar/NavBar';
-import style from "./App.module.css"
+import Form from './components/Form/Form';
+import styles from "./App.module.css"
 import { useState, useEffect } from "react"
 import LandingPage from './components/LandingPag/LandingPag';
 import Detail from './components/Detail/Detail';
-//import { fetch } from "node-fetch"
+
+
 
 function App() {
-  // 1°un stato para el array de los personajes 
-  const [characters, setcharacters] = useState([]);
-  //
-  //  const navigate = useNavigate();
-  // //
-  // const [access, setAccess] = useState(false);
-  //
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [characters, setCharacters] = useState([]);
+  const [access, setAccess] = useState(false);
+  const username = "exemple@gmail.com";
+  const password = "ae1234";
 
-  //2° function para agregar personajes
-//   const onSearch = () => {
-//   const example = {
-//  name: 'Yorkshire Terrier',
-//     breed_group: "Toy",
-//     life_span: "12 - 16 years",
-//     image: 'https://cdn2.thecharacterapi.com/images/B12BnxcVQ.jpg'
-//     };
-//     // setear characters e passar example.. seria el setcharacters trajendo mi la copia de lo que hay en characterS Y EXAMPLE. Example sera la copia de mi estado. objecto, function
-//     setcharacters([...characters, example])
-// } // AHORA VSMOS USAR EL METODO FETC
-//
-//
-   const onSearch = (character) => {
-    //https://api.thecharacterapi.com/v1/breeds/
+  if (useLocation().pathname === "/") {
+    document.body.classList.add("bodyBlack");
+  } else {
+    document.body.classList.remove("bodyBlack");
+  }
+
+  const login = (userData) => {
+    if (username === userData.username && password === userData.password) {
+      setAccess(true);
+      navigate("/home");
+    } else {
+      window.alert("El usuario o la contraseña es incorrecta");
+    }
+  };
+
+  const logout = () => {
+    setAccess(false);
+    navigate("/");
+  };
+  const onSearch = (character) => {
+    //https://api.thedogapi.com/v1/breeds/
     fetch(`https://rickandmortyapi.com/api/character/${character}`)
       .then((response) => response.json())
-      // aca el mensajero ya me devuelve la respuesta
       .then((data) => {
-        console.log(data)
         if (data.id) {
-          if (characters.some((charactere) => charactere.id === data.id)) {
+          if (characters.some((char) => char.id === data.id)) {
             window.alert("Ya agregaste a ese personaje!");
           } else {
-            setcharacters((oldcharacteres) => [...oldcharacteres, data]);
+            setCharacters((oldChars) => [...oldChars, data]);
           }
         } else {
           window.alert("No hay personajes con ese ID");
         }
       });
   };
-//
-//
-//
-   const onClose = (id) => {
-    setcharacters((characters) => characters.filter((charactere) => charactere.id !== id));
+  const onClose = (id) => {
+    setCharacters((characters) => characters.filter((char) => char.id !== id));
   };
-  //
-  // useEffect(() => {
-  //   !access && navigate("/");
-  // }, [access]);
-//
+
+  /* eslint-disable */
+  useEffect(() => {
+    !access && navigate("/");
+  }, [access]);
+  /* eslint-disable */
+
   return (
-    <>
-    <div className={style.app}>
-    <div className={style.img}>
-          <div>
-            <NavBar
-              onSearch={onSearch}
-            />
+    <div className={styles.app}>
+      <div className={styles.img}>
+        <div className={styles.container}>
+          <div className={styles.favorites}>
+            <div>
+              <div>
+                {location.pathname !== "/" && (
+                  <NavBar onSearch={onSearch} logout={logout} />
+                )}
+              </div>
+            </div>
             <Routes>
-               <Route
+              <Route exact path="/" element={<Form login={login} />} />
+              <Route
                 path="/home"
                 element={<Cards characters={characters} onClose={onClose} />}
               />
-              <Route path="/landingpag" element={<LandingPage />} />
-              <Route path="/detail/:detailId" element={<Detail />} />
-              
-           </Routes>
-       
+              <Route path="/detail/:id" element={<Detail />} />
+              <Route path="/landingPage" element={< LandingPage />} />
+              {/* <Route path="/favorites" element={<Favorites />} />
+              <Route path="*" element={<PageNotFound />} /> */}
+            </Routes>
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-    </div>
-    </>
-  )
+  );
 }
 
 export default App;

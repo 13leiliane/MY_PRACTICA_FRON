@@ -1,28 +1,22 @@
 .card {
   position: relative;
-  width: 200px;
-  height: 250px;
+  width: 250px;
+  height: 290px;
   margin: 1rem;
+  box-shadow: 0px 2px 5px rgba(35, 35, 35, 0.3);
+  transition: all 0.3s ease-in-out;
   overflow: hidden;
-  border: solid black;
+  border: solid rgb(143, 129, 129) 5px;
   border-radius: 10px;
   background-color: transparent;
 }
 
-
-
-.subtitle{
-  
-  display: block;
-  margin: 0 40px;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
 .cardImg {
   position: absolute;
-  width:
-   100%;
+  top: 0px;
+  width: 100%;
 }
+
 .cardInfo {
   position: absolute;
   width: 100%;
@@ -31,8 +25,28 @@
   text-align: center;
 }
 
+.cardInfo > h2 {
+  margin: 0 auto;
+}
 
-/* para el posicionamento del botton  */
+.title {
+  margin: 0 auto;
+  font-size: 1.8em;
+  font-weight: 400;
+}
+
+.subtitle {
+  position: relative;
+  top: 0px;
+}
+
+.subtitle > h2 {
+  display: block;
+  margin: 0 5px;
+  font-size: 1rem;
+  font-weight: 300;
+}
+
 .button {
   position: absolute;
   top: -50px;
@@ -47,6 +61,11 @@
   z-index: 1;
 }
 
+.button > svg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .status {
   position: absolute;
@@ -59,24 +78,69 @@
   border-radius: 1rem;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
-/* este espara la sombra roja del container de la imagens */
+
+a:-webkit-any-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.alive {
+  background-color: green;
+}
+
+.addFav {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 10;
+  transform: scale(1.7);
+  fill: rgb(184, 24, 24);
+  filter: drop-shadow(0px 4px 2px rgb(0 0 0 / 0.4));
+  cursor: pointer;
+}
+
+.borderFav {
+  position: absolute;
+  border-radius: 50%;
+  left: 10px;
+  top: 10px;
+  z-index: 10;
+  transform: scale(1.7);
+  fill: rgb(207, 9, 9);
+  cursor: pointer;
+  filter: drop-shadow(0px 1px 2px rgb(0, 0, 0));
+}
+
 .card:hover {
   box-shadow: 1px 2px 10px rgba(219, 15, 15, 0.5);
   transition: all 0.3s ease-in-out;
 }
 
-/* esta es la parte que klla imagens del perro sub 5 segundos */
 .card:hover .cardImg {
-  transition: all 0.5s ease-in-out;
-  transform: translateY(10%);
+  transition: all 0.3s ease-in-out;
+  transform: translateY(-10%);
 }
 
+.card:hover .cardInfo {
+  transition: all 0.3s ease-in-out;
+  transform: translateY(-45px);
+}
 
-
-/* para que aparezca el button */
 .card:hover .button {
   transform: translateY(56px);
   transition: all 0.3s ease-in-out;
 }
 
+.button:hover {
+  box-shadow: 0px 15px 20px rgba(35, 35, 35, 0.4);
+}
 
+.card:hover .status {
+  transform: translateY(56px);
+  transition: all 0.3s ease-in-out;
+}
+
+/* @font-face {
+  font-family: rick_and_morty;
+  src: url(../../assets/MISFITS-font.ttf);
+}*/
