@@ -5,15 +5,15 @@
   right: 0;
 }
 
-/* .favorites {
+.favorites {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 10px;
-} */
+}
 .container {
-  width: 85vw;
-  height: 93vh;
+  width: 80vw;
+  height: 92vh;
   margin: 5vh 8.5vw;
 
   overflow: hidden;
@@ -24,8 +24,11 @@
 
 .app,
 .container {
-  background-image: url("./assets/Rodrigues.jpg");
- background-repeat: no-repeat;
+  background-image: url("./assets/lindo.jpg");
+  /* background-image: url("./assets/photo.gif"); */
+  /* background-image: url("./assets/imger.jpg"); */
+  /*  background-image: url("./assets/Rick-Morty-8-cosas.jpg");*/
+  background-repeat: no-repeat;
   background-size: cover;
   border-radius: 1rem;
 

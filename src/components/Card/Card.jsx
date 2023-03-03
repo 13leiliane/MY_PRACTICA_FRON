@@ -1,30 +1,78 @@
-import style from "./style/Card.module.css"
+import styles  from "./style/Card.module.css"
 import { GrClose } from "react-icons/gr";
-// importa el nombre del personaje con ele elemento NAVLINK o / LINK
-import { NavLink } from "react-router-dom"
-//
+import { MdOutlineFavoriteBorder, MdFavorite } from "react-icons/md";
+import { NavLink, useLocation } from "react-router-dom";
+import { addFav, deleteFav } from "../../redux/actions/actions";
+import { connect } from "react-redux";
+import React from "react";
 
-export default function Card(props) {
-  console.log(props)
-   return (
-     <div className={style.card}>
-       <h2 className={style.subtitle}><i>{ props.name }</i></h2>
-<img className={style.cardImg} src={props.image} alt={props.name} />
-       <div className={style.cardInfo}>
-         <NavLink to={`/detail/${props.id}`}></NavLink>
-         <div className={style.subtitle}>
-         <h2>{props.species}</h2>
-           <h2>{props.gender}</h2>
-         </div>
-         </div>
+export const Card = (props) => {
+  const [isFav, setIsFav] = React.useState(false);
+  const { myFavorites } = props;
+
+  const handleFavorite = () => {
+    if (isFav) {
+      setIsFav(false);
+      props.deleteFav(props.id);
+    } else {
+      setIsFav(true);
+      props.addFav(props);
+    }
+  };
+
+  React.useEffect(() => {
+    myFavorites.forEach((fav) => {
+      if (fav.id === props.id) {
+        setIsFav(true);
+      }
+    });
+  }, [myFavorites, props.id]);
+
+  return (
+    <div className={styles.card}>
+      {isFav ? (
+        <MdFavorite className={styles.addFav} onClick={handleFavorite} />
+      ) : (
+        <MdOutlineFavoriteBorder
+          className={styles.borderFav}
+          onClick={handleFavorite}
+        />
+      )}
+      <img className={styles.cardImg} src={props.image} alt={props.name} />
+      <div className={styles.cardInfo}>
+        <NavLink to={`/detail/${props.id}`}>
+          <h2 className={styles.title}>{props.name}</h2>
+        </NavLink>
+        <div className={styles.subtitle}>
+          <h2 className={styles.subtitle}>{props.species}</h2>
+          <h2>{props.gender}</h2>
+        </div>
+      </div>
+      {useLocation().pathname !== "/favorites" && (
         <button
-          className={style.button}
+          className={styles.button}
           onClick={() => props.onClose(props.id)}
         >
           <GrClose />
         </button>
-      
-         
-      </div>
-   );
-}
+      )}
+    </div>
+  );
+};
+
+/* eslint-disable */
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addFav: (props) => dispatch(addFav(props)),
+    deleteFav: (id) => dispatch(deleteFav(id)),
+  };
+};
+/* eslint-disable */
+
+const mapStateToProps = (state) => {
+  return {
+    myFavorites: state.myFavorites,
+  };
+};
+
+export default connect(mapStateToProps, { addFav, deleteFav })(Card);

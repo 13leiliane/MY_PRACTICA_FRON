@@ -1,5 +1,5 @@
 import Card from "../Card/Card";
-import style from "./style/Cards.module.css"
+import styles from "./style/Cards.module.css"
 
 export default function Cards(props) {
   const { characters, onClose } = props;
@@ -15,6 +15,6 @@ export default function Cards(props) {
       status={elem.status}
     />
   ));
-  return <div className={style.cards}>{cards}</div>;
+  return <div className={styles.cards}>{cards}</div>;
 }
 // Sehuindo paso a paso com a professora.
